@@ -5,6 +5,7 @@ import orderRoutes from "./OrderRoutes.js";
 import brandRoutes from "./BrandRoutes.js";
 import colorRoutes from "./ColorRoutes.js";
 import productRoutes from "./ProductRoutes.js";
+import favoriteRoutes from "./FavoriteRoutes.js";
 import categoryRoutes from "./CategoryRoutes.js";
 
 const router = express.Router();
@@ -15,6 +16,7 @@ router.use("/colors", colorRoutes);
 router.use("/brands", brandRoutes);
 router.use("/orders", orderRoutes);
 router.use("/products", productRoutes);
+router.use("favorites", favoriteRoutes);
 router.use("/categories", categoryRoutes);
 
 export default router;
