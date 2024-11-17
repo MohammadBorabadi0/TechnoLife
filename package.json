@@ -1,0 +1,16 @@
+{
+    "name": "techno-life",
+    "version": "1.0.0",
+    "description": "TechoLife using next.js node.js express mongodb",
+    "license": "ISC",
+    "author": "Mohammad Borabadi",
+  "scripts": {
+    "dev": "concurrently \"yarn dev:frontend\" \"yarn dev:backend\"",
+    "dev:frontend": "yarn --cwd frontend dev", 
+    "dev:backend": "yarn --cwd backend start"  
+  },
+    "dependencies": {},
+    "devDependencies": {
+        "concurrently": "^9.1.0"
+    }
+}
