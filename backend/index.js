@@ -10,6 +10,9 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Cookie Parser
+app.use(cookieParser());
+
 // Connect to MongoDB
 connectDB();
 
