@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import express from "express";
 import connectDB from "./db/connect.js";
+import cookieParser from "cookie-parser";
 import notFound from "./middlewares/not-found.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 
@@ -9,6 +10,9 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Cookie Parser
+app.use(cookieParser());
 
 // Connect to MongoDB
 connectDB();
