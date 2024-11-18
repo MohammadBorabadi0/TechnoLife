@@ -1,17 +1,21 @@
+import dotenv from "dotenv";
 import express from "express";
 import connectDB from "./db/connect.js";
-import dotenv from "dotenv";
 import notFound from "./middlewares/not-found.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 
-const app = express();
 dotenv.config();
+const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Connect to MongoDB
 connectDB();
+
+app.get("/", (req, res) => {
+    return res.send("server is running on port " + process.env.PORT ?? 5000);
+});
 
 // 404
 app.use(notFound);
@@ -20,5 +24,5 @@ app.use(notFound);
 app.use(errorHandler);
 
 app.listen(5000, () => {
-    console.log("Server is running on port 5000");
+    console.log("Server is running on port " + process.env.PORT ?? 5000);
 });
