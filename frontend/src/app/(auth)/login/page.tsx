@@ -101,7 +101,7 @@ const LoginPage = () => {
                         errorMessage={errors.password?.message}
                     />
 
-                    <AppButton className="w-full" variant="info">
+                    <AppButton className="w-full" variant="info" size="large">
                         ورود
                     </AppButton>
                 </form>
