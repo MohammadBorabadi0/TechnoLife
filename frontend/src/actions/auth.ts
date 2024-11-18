@@ -1,4 +1,4 @@
-const url = process.env.BACKEND_URL;
+const url = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export const login = async (formData: FormData) => {
     const email = formData.get("email");

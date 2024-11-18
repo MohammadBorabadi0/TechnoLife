@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { uploadFileToSupabase } from "@/utils/functions";
 
-const url = `${process.env.BACKEND_URL}/auth`;
+const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth`;
 
 export async function getUsers(page?: number, limit?: number, search?: string) {
     const currentPage = page || 1;
