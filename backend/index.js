@@ -14,10 +14,10 @@ app.use(express.urlencoded({ extended: true }));
 connectDB();
 
 // 404
-app.use(notFound());
+app.use(notFound);
 
 // errorHandler
-app.use(errorHandler());
+app.use(errorHandler);
 
 app.listen(5000, () => {
     console.log("Server is running on port 5000");
