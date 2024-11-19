@@ -24,6 +24,7 @@ const getCategories = async (req, res) => {
             totalCategories,
         });
     } catch (error) {
+        console.log(error);
         return res.status(500).json({
             success: false,
             message: "مشکلی در ارتباط با سرور به وجود آمد",
@@ -45,6 +46,7 @@ const getCategoryById = async (req, res) => {
 
         return res.status(200).json({ success: true, data: category });
     } catch (error) {
+        console.log(error);
         return res.status(500).json({
             success: false,
             message: "مشکلی در ارتباط با سرور به وجود آمد",
@@ -137,6 +139,7 @@ const updateCategory = async (req, res) => {
             data: category,
         });
     } catch (error) {
+        console.log(error);
         return res.status(500).json({
             success: false,
             message: "خطایی در سمت سرور رخ داده است",
@@ -174,6 +177,7 @@ const updateCategoryStatus = async (req, res) => {
             category,
         });
     } catch (error) {
+        console.log(error);
         return res.status(500).json({
             success: false,
             message: "مشکلی در ارتباط با سرور به وجود آمد.",
@@ -182,34 +186,42 @@ const updateCategoryStatus = async (req, res) => {
 };
 
 const deleteCategory = async (req, res) => {
-    const { id } = req.params;
+    try {
+        const { id } = req.params;
 
-    const brandWithCategory = await Brand.findOne({
-        "categories.category": id,
-    });
+        const brandWithCategory = await Brand.findOne({
+            "categories.category": id,
+        });
 
-    if (brandWithCategory) {
-        return res.status(400).json({
+        if (brandWithCategory) {
+            return res.status(400).json({
+                success: false,
+                message:
+                    "این دسته‌بندی در برندها استفاده شده است و نمی‌توان آن را حذف کرد",
+            });
+        }
+
+        const category = await Category.findByIdAndDelete(id);
+
+        if (!category) {
+            return res.status(404).json({
+                success: false,
+                message: "دسته‌بندی با این مشخصات پیدا نشد",
+            });
+        }
+
+        return res.json({
+            success: true,
+            message: "دسته‌بندی با موفقیت حذف شد",
+            category,
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
             success: false,
-            message:
-                "این دسته‌بندی در برندها استفاده شده است و نمی‌توان آن را حذف کرد",
+            message: "مشکلی در ارتباط با سرور به وجود آمد.",
         });
     }
-
-    const category = await Category.findByIdAndDelete(id);
-
-    if (!category) {
-        return res.status(404).json({
-            success: false,
-            message: "دسته‌بندی با این مشخصات پیدا نشد",
-        });
-    }
-
-    return res.json({
-        success: true,
-        message: "دسته‌بندی با موفقیت حذف شد",
-        category,
-    });
 };
 
 export {
