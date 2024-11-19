@@ -179,3 +179,24 @@ export interface AddressFormValues {
     housenumber: string;
     postalCode: string;
 }
+
+export interface ImageUpload {
+    file: File | null;
+    color: string;
+    price: number;
+    isSelected?: boolean;
+}
+
+export interface ProductUpload {
+    name: string;
+    category: string;
+    brand: string;
+    isActive: boolean;
+    description: string;
+    discount: number;
+    discountTime: number;
+    countInStock: number;
+    images: ImageUpload[];
+    specifications: Specifications;
+    reviews?: Review[];
+}
