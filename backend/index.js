@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 import express from "express";
+import cors from "cors";
 import connectDB from "./db/connect.js";
 import cookieParser from "cookie-parser";
 import notFound from "./middlewares/not-found.js";
@@ -8,6 +9,16 @@ import { errorHandler } from "./middlewares/errorHandler.js";
 
 dotenv.config();
 const app = express();
+
+// Enable CORS for both localhost:3000 and localhost:3001
+app.use(
+    cors({
+        origin: ["http://localhost:3000", "http://localhost:3001"],
+        methods: ["GET", "POST", "PUT", "DELETE"],
+        allowedHeaders: ["Content-Type", "Authorization"],
+        credentials: true,
+    })
+);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
