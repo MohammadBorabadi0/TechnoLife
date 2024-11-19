@@ -80,23 +80,18 @@ export const createCategory = async (formData: FormData) => {
 };
 
 export const updateCategory = async (formData: FormData, id: string) => {
-    const newFormData = {
-        name: formData.get("name"),
-        iconUrl: await uploadFileToSupabase(
-            formData.get("icon") as File,
-            "categories"
-        ),
-        imageUrl: await uploadFileToSupabase(
-            formData.get("file") as File,
-            "categories"
-        ),
-    };
+    const name = formData.get("name");
+    const file = formData.get("file");
+    const icon = formData.get("icon");
+
+    const imageUrl = await uploadFileToSupabase(file as File, "categories");
+    const iconUrl = await uploadFileToSupabase(icon as File, "categories");
 
     try {
         const response = await fetch(`${url}/categories/${id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(newFormData),
+            body: JSON.stringify({ name, imageUrl, iconUrl }),
         });
         const data = await response.json();
         return data;
