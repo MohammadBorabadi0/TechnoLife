@@ -3,6 +3,7 @@
 import { uploadFileToSupabase } from "@/utils/functions";
 import { Brand } from "@/utils/types";
 import { revalidatePath } from "next/cache";
+import { cookies } from "next/headers";
 
 const url = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -43,6 +44,16 @@ export const getBrand = async (id: string) => {
 
 export const createBrand = async (formData: FormData) => {
     try {
+        const cookieStore = await cookies();
+        const token = cookieStore.get("token");
+
+        if (!token?.value) {
+            return {
+                success: false,
+                message: "توکن منقضی شده لطفا مجددا وارد سایت شوید",
+            };
+        }
+
         const { data: brands } = await getBrands();
 
         const brandData = [];
@@ -76,7 +87,10 @@ export const createBrand = async (formData: FormData) => {
 
         const response = await fetch(`${url}/brands`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token.value}`,
+            },
             body: JSON.stringify({ name, categories: brandData }),
         });
         const data = await response.json();
@@ -89,8 +103,21 @@ export const createBrand = async (formData: FormData) => {
 
 export const deleteBrand = async (id: string) => {
     try {
+        const cookieStore = await cookies();
+        const token = cookieStore.get("token");
+
+        if (!token?.value) {
+            return {
+                success: false,
+                message: "توکن منقضی شده لطفا مجددا وارد سایت شوید",
+            };
+        }
+
         const response = await fetch(`${url}/brands/${id}`, {
             method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token.value}`,
+            },
         });
         const data = await response.json();
         revalidatePath("/admin/brands");
@@ -102,6 +129,16 @@ export const deleteBrand = async (id: string) => {
 
 export const updateBrand = async (formData: FormData, id: string) => {
     try {
+        const cookieStore = await cookies();
+        const token = cookieStore.get("token");
+
+        if (!token?.value) {
+            return {
+                success: false,
+                message: "توکن منقضی شده لطفا مجددا وارد سایت شوید",
+            };
+        }
+
         const { data: brands } = await getBrands();
 
         const brandData = [];
@@ -135,11 +172,13 @@ export const updateBrand = async (formData: FormData, id: string) => {
 
         const response = await fetch(`${url}/brands/${id}`, {
             method: "PUT",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token.value}`,
+            },
             body: JSON.stringify({ name, categories: brandData }),
         });
         const data = await response.json();
-        console.log("DATA", data);
         return data;
     } catch (error) {
         console.log(error);
