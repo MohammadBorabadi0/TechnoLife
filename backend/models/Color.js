@@ -7,7 +7,7 @@ const colorSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        active: { type: Boolean, default: false },
+        isActive: { type: Boolean, default: false },
     },
     { timestamps: true }
 );
