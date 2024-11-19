@@ -1,5 +1,5 @@
 import { getCategories } from "@/actions/categories";
-import CategoriesScreen from "@/screens/admin/CategoriesScreen";
+import CategoriesScreen from "@/screens/admin/categories/CategoriesScreen";
 
 const CategoriesPage = async ({
     searchParams,
