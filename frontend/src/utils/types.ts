@@ -112,7 +112,7 @@ export interface Product {
     name: string;
     category: string;
     brand: string;
-    active: boolean;
+    isActive: boolean;
     description: string;
     orderCount?: number;
     discount: number;
