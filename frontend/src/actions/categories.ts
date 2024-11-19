@@ -62,13 +62,14 @@ export const createCategory = async (formData: FormData) => {
     try {
         const name = formData.get("name");
         const file = formData.get("file");
-        const active = formData.get("active");
+        const icon = formData.get("icon");
 
         const imageUrl = await uploadFileToSupabase(file as File, "categories");
+        const iconUrl = await uploadFileToSupabase(icon as File, "categories");
 
         const response = await fetch(`${url}/categories`, {
             method: "POST",
-            body: JSON.stringify({ name, imageUrl, active }),
+            body: JSON.stringify({ name, imageUrl, iconUrl }),
             headers: { "Content-Type": "application/json" },
         });
         const data = await response.json();
@@ -81,7 +82,10 @@ export const createCategory = async (formData: FormData) => {
 export const updateCategory = async (formData: FormData, id: string) => {
     const newFormData = {
         name: formData.get("name"),
-        active: formData.get("active"),
+        iconUrl: await uploadFileToSupabase(
+            formData.get("icon") as File,
+            "categories"
+        ),
         imageUrl: await uploadFileToSupabase(
             formData.get("file") as File,
             "categories"
