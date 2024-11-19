@@ -12,7 +12,7 @@ import categoryRoutes from "./CategoryRoutes.js";
 const router = express.Router();
 
 // Mount the category and user routes
-router.use("/users", userRoutes);
+router.use("/auth", userRoutes);
 router.use("/colors", colorRoutes);
 router.use("/brands", brandRoutes);
 router.use("/orders", orderRoutes);
