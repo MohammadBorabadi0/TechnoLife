@@ -54,7 +54,7 @@ const getCategoryById = async (req, res) => {
 
 const createCategory = async (req, res) => {
     try {
-        const { name, isActive, imageUrl } = req.body;
+        const { name, iconUrl, imageUrl } = req.body;
 
         if (!name) {
             return res.status(400).json({
@@ -81,7 +81,7 @@ const createCategory = async (req, res) => {
 
         const newCategory = await Category.create({
             name,
-            isActive,
+            iconUrl,
             imageUrl,
         });
 
@@ -91,6 +91,7 @@ const createCategory = async (req, res) => {
             message: "دسته بندی با موفقیت ایجاد شد",
         });
     } catch (error) {
+        console.log(error);
         return res.status(500).json({
             success: false,
             message: "مشکلی در ارتباط با سرور به وجود آمد",
@@ -100,7 +101,7 @@ const createCategory = async (req, res) => {
 
 const updateCategory = async (req, res) => {
     try {
-        const { name, isActive, imageUrl } = req.body;
+        const { name, iconUrl, imageUrl } = req.body;
         const { id } = req.params;
 
         const existingCategory = await Category.findOne({
@@ -126,8 +127,7 @@ const updateCategory = async (req, res) => {
 
         category.name = name || category.name;
         category.imageUrl = imageUrl || category.imageUrl;
-        category.isActive =
-            isActive !== undefined ? isActive : category.isActive;
+        category.iconUrl = iconUrl || category.iconUrl;
 
         await category.save();
 
