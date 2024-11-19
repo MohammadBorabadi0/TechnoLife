@@ -47,3 +47,19 @@ export const uploadFileToSupabase = async (
 
     return publicData?.publicUrl || null;
 };
+
+// Convert Image Url To File
+export const imageUrlToFile = async (imageUrl: string) => {
+    const response = await fetch(imageUrl);
+    const blob = await response.blob();
+
+    // Detect MIME type
+    const mimeType = blob.type || "image/png"; // Default to PNG if MIME type is not specified
+
+    // File name based on MIME type
+    const fileExtension = mimeType.split("/")[1]; // Get the correct extension
+    const fileName = `${Date.now()}.${fileExtension}`;
+
+    const file = new File([blob], fileName, { type: mimeType });
+    return file;
+};
