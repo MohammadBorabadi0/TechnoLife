@@ -3,6 +3,7 @@ import express from "express";
 import connectDB from "./db/connect.js";
 import cookieParser from "cookie-parser";
 import notFound from "./middlewares/not-found.js";
+import mainRoutes from "./routes/MainRoutes.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 
 dotenv.config();
@@ -16,6 +17,9 @@ app.use(cookieParser());
 
 // Connect to MongoDB
 connectDB();
+
+// Use mainRoutes for API endpoints
+app.use("/api", mainRoutes);
 
 app.get("/", (req, res) => {
     return res.send("server is running on port " + process.env.PORT ?? 5000);
