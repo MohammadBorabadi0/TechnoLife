@@ -24,12 +24,10 @@ const getProducts = async (req, res) => {
         });
     } catch (error) {
         console.log(error);
-        return res
-            .status(500)
-            .json({
-                success: false,
-                message: "Error occurred with the server",
-            });
+        return res.status(500).json({
+            success: false,
+            message: "Error occurred with the server",
+        });
     }
 };
 
@@ -280,7 +278,7 @@ const updateProductStatus = async (req, res) => {
                 .json({ success: false, message: "Product not found" });
         }
 
-        product.active = value;
+        product.isActive = value;
 
         await product.save();
 
@@ -291,12 +289,10 @@ const updateProductStatus = async (req, res) => {
         });
     } catch (error) {
         console.error(error);
-        return res
-            .status(500)
-            .json({
-                success: false,
-                message: "Error occurred with the server",
-            });
+        return res.status(500).json({
+            success: false,
+            message: "Error occurred with the server",
+        });
     }
 };
 

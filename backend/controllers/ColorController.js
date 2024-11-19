@@ -137,7 +137,7 @@ const updateColorStatus = async (req, res) => {
             });
         }
 
-        color.active = value;
+        color.isActive = value;
         await color.save();
 
         return res.status(200).json({

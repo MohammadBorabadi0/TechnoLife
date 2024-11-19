@@ -54,15 +54,13 @@ const getCategoryById = async (req, res) => {
 
 const createCategory = async (req, res) => {
     try {
-        const { name, active, imageUrl } = req.body;
+        const { name, isActive, imageUrl } = req.body;
 
         if (!name) {
-            return res
-                .status(400)
-                .json({
-                    success: false,
-                    message: "نام دسته بندی را وارد کنید",
-                });
+            return res.status(400).json({
+                success: false,
+                message: "نام دسته بندی را وارد کنید",
+            });
         }
 
         const findCategory = await Category.findOne({ name });
@@ -83,7 +81,7 @@ const createCategory = async (req, res) => {
 
         const newCategory = await Category.create({
             name,
-            active,
+            isActive,
             imageUrl,
         });
 
@@ -102,7 +100,7 @@ const createCategory = async (req, res) => {
 
 const updateCategory = async (req, res) => {
     try {
-        const { name, active, imageUrl } = req.body;
+        const { name, isActive, imageUrl } = req.body;
         const { id } = req.params;
 
         const existingCategory = await Category.findOne({
@@ -128,7 +126,8 @@ const updateCategory = async (req, res) => {
 
         category.name = name || category.name;
         category.imageUrl = imageUrl || category.imageUrl;
-        category.active = active !== undefined ? active : category.active;
+        category.isActive =
+            isActive !== undefined ? isActive : category.isActive;
 
         await category.save();
 
@@ -160,15 +159,13 @@ const updateCategoryStatus = async (req, res) => {
         const category = await Category.findById(id);
 
         if (!category) {
-            return res
-                .status(404)
-                .json({
-                    success: false,
-                    message: "دسته بندی با این مشخصات پیدا نشد.",
-                });
+            return res.status(404).json({
+                success: false,
+                message: "دسته بندی با این مشخصات پیدا نشد.",
+            });
         }
 
-        category.active = value;
+        category.isActive = value;
         await category.save();
 
         return res.status(200).json({
@@ -177,12 +174,10 @@ const updateCategoryStatus = async (req, res) => {
             category,
         });
     } catch (error) {
-        return res
-            .status(500)
-            .json({
-                success: false,
-                message: "مشکلی در ارتباط با سرور به وجود آمد.",
-            });
+        return res.status(500).json({
+            success: false,
+            message: "مشکلی در ارتباط با سرور به وجود آمد.",
+        });
     }
 };
 
@@ -204,12 +199,10 @@ const deleteCategory = async (req, res) => {
     const category = await Category.findByIdAndDelete(id);
 
     if (!category) {
-        return res
-            .status(404)
-            .json({
-                success: false,
-                message: "دسته‌بندی با این مشخصات پیدا نشد",
-            });
+        return res.status(404).json({
+            success: false,
+            message: "دسته‌بندی با این مشخصات پیدا نشد",
+        });
     }
 
     return res.json({
