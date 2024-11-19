@@ -40,22 +40,18 @@ const getBrandById = async (req, res) => {
         const brand = await Brand.findOne({ _id: id });
 
         if (!brand) {
-            return res
-                .status(404)
-                .json({
-                    success: false,
-                    message: "برند با این مشخصات پیدا نشد",
-                });
+            return res.status(404).json({
+                success: false,
+                message: "برند با این مشخصات پیدا نشد",
+            });
         }
 
         return res.status(200).json({ success: true, data: brand });
     } catch (error) {
-        return res
-            .status(500)
-            .json({
-                success: false,
-                message: "مشکلی در ارتباط با سرور به وجود آمد",
-            });
+        return res.status(500).json({
+            success: false,
+            message: "مشکلی در ارتباط با سرور به وجود آمد",
+        });
     }
 };
 
@@ -94,7 +90,7 @@ const createBrand = async (req, res) => {
             brand.categories.push({
                 category: existingCategory._id,
                 imageUrl,
-                showInHomePage: item.showInHomePage || false,
+                isActive: item.isActive || false,
             });
         }
 
@@ -120,12 +116,10 @@ const updateBrand = async (req, res) => {
 
         const brand = await Brand.findOne({ _id: brandId });
         if (!brand) {
-            return res
-                .status(404)
-                .json({
-                    success: false,
-                    message: "برند با این مشخصات پیدا نشد",
-                });
+            return res.status(404).json({
+                success: false,
+                message: "برند با این مشخصات پیدا نشد",
+            });
         }
 
         for (const cat of categories) {
