@@ -50,6 +50,16 @@ export const getProduct = async (id: string) => {
 };
 
 export const createProduct = async (formData: FormData) => {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("token");
+
+    if (!token?.value) {
+        return {
+            success: false,
+            message: "توکن منقضی شده لطفا مجددا وارد سایت شوید",
+        };
+    }
+
     const specifications: Specifications = extractSpecifications(formData);
 
     const productData: ProductUpload = {
@@ -95,6 +105,7 @@ export const createProduct = async (formData: FormData) => {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${token.value}`,
             },
             body: JSON.stringify({
                 ...productData,
@@ -111,6 +122,15 @@ export const createProduct = async (formData: FormData) => {
 };
 
 export const updateProduct = async (formData: FormData, id: string) => {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("token");
+
+    if (!token?.value) {
+        return {
+            success: false,
+            message: "توکن منقضی شده لطفا مجددا وارد سایت شوید",
+        };
+    }
     const specifications: Specifications = extractSpecifications(formData);
 
     const productData: ProductUpload = {
@@ -156,6 +176,7 @@ export const updateProduct = async (formData: FormData, id: string) => {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${token.value}`,
             },
             credentials: "include",
             body: JSON.stringify({
@@ -173,31 +194,61 @@ export const updateProduct = async (formData: FormData, id: string) => {
 };
 
 export const deleteProduct = async (id: string) => {
-    const response = await fetch(`${url}/products/${id}`, {
-        method: "DELETE",
-        credentials: "include",
-    });
-    const data = await response.json();
-    revalidatePath("/products");
-    return data;
+    try {
+        const cookieStore = await cookies();
+        const token = cookieStore.get("token");
+
+        if (!token?.value) {
+            return {
+                success: false,
+                message: "توکن منقضی شده لطفا مجددا وارد سایت شوید",
+            };
+        }
+
+        const response = await fetch(`${url}/products/${id}`, {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token.value}`,
+            },
+        });
+        const data = await response.json();
+        revalidatePath("/products");
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
 };
 
 // Product Status
 export const updateProductStatus = async (id: string, value: boolean) => {
-    const response = await fetch(`${url}/products/${id}/status`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ value }),
-        credentials: "include",
-    });
-    const data = await response.json();
-    revalidatePath("/products");
-    return data;
+    try {
+        const cookieStore = await cookies();
+        const token = cookieStore.get("token");
+
+        if (!token?.value) {
+            return {
+                success: false,
+                message: "توکن منقضی شده لطفا مجددا وارد سایت شوید",
+            };
+        }
+        const response = await fetch(`${url}/products/${id}/status`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token.value}`,
+            },
+            body: JSON.stringify({ value }),
+        });
+        const data = await response.json();
+        revalidatePath("/products");
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
 };
 
 // Product Reviews
 export const createProductReview = async (formData: FormData, id: string) => {
-    console.log(formData);
     const rating = formData.get("rating");
     const comment = formData.get("comment");
     const positivePoints = formData.get("positivePointsString");
